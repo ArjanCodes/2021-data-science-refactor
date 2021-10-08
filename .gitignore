@@ -1,0 +1,4 @@
+after/runs/**
+before/runs/**
+**/*.pyc
+**/.DS_Store
