@@ -29,7 +29,7 @@ def main():
 
     # Create the data loaders
     test_loader = create_dataloader(BATCH_SIZE, TEST_DATA, TEST_LABELS)
-    train_loader = create_dataloader(BATCH_SIZE, TRAIN_DATA, TRAIN_LABELS)
+    train_loader = create_dataloader(BATCH_SIZE, TRAIN_DATA, TRAIN_LABELS, shuffle=True)
 
     # Create the runners
     test_runner = Runner(test_loader, model)
