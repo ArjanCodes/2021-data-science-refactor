@@ -1,11 +1,12 @@
 from numbers import Real
+from typing import List
 
 
 class Metric:
-    values: list[Real]
-    running_total: float
-    num_updates: float
-    average: float
+    values: List[Real] = []
+    running_total: float = 0.0
+    num_updates: float = 0.0
+    average: float = 0.0
 
     def __init__(self):
         self.reset()

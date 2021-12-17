@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Tuple
 import torch
 from torch.utils.data import Dataset, DataLoader
 
@@ -25,7 +26,7 @@ class MNIST(Dataset):
     def __len__(self):
         return len(self.data)
 
-    def __getitem__(self, idx) -> tuple[torch.Tensor, torch.Tensor]:
+    def __getitem__(self, idx) -> Tuple[torch.Tensor, torch.Tensor]:
         x = self.get_x(idx)
         y = self.get_y(idx)
         return x, y

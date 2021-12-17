@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from numbers import Real
 from pathlib import Path
-from typing import Union, Tuple
+from typing import Union, Tuple, Dict, List
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -33,14 +33,14 @@ class ExperimentTracker(ABC):
         """Implements logging a confusion matrix at epoch-level."""
 
     @abstractmethod
-    def add_hparams(self, hparams: dict[str, Union[str, Real]], metrics: dict[str, Real]):
+    def add_hparams(self, hparams: Dict[str, Union[str, Real]], metrics: Dict[str, Real]):
         """Implements logging hyperparameters."""
 
-    def add_batch_metrics(self, values: dict[str, Real], step: int):
+    def add_batch_metrics(self, values: Dict[str, Real], step: int):
         for name, value in values.items():
             self.add_batch_metric(name, value, step)
 
-    def add_epoch_metrics(self, values: dict[str, Real], step: int):
+    def add_epoch_metrics(self, values: Dict[str, Real], step: int):
         for name, value in values.items():
             self.add_epoch_metric(name, value, step)
 
@@ -77,14 +77,14 @@ class TensorboardExperiment(ExperimentTracker):
         tag = f'{self.stage}/epoch/{name}'
         self._writer.add_scalar(tag, value, step)
 
-    def add_epoch_confusion_matrix(self, y_true: list[np.array], y_pred: list[np.array], step: int):
+    def add_epoch_confusion_matrix(self, y_true: List[np.array], y_pred: List[np.array], step: int):
         y_true, y_pred = self.collapse_batches(y_true, y_pred)
         fig = self.create_confusion_matrix(y_true, y_pred, step)
         tag = f'{self.stage}/epoch/confusion_matrix'
         self._writer.add_figure(tag, fig, step)
 
     @staticmethod
-    def collapse_batches(y_true: list[np.array], y_pred: list[np.array]) -> Tuple[np.ndarray, np.ndarray]:
+    def collapse_batches(y_true: List[np.array], y_pred: List[np.array]) -> Tuple[np.ndarray, np.ndarray]:
         return np.concatenate(y_true), np.concatenate(y_pred)
 
     def create_confusion_matrix(self, y_true: np.array, y_pred: np.array, step: int) -> plt.Figure:
@@ -94,7 +94,7 @@ class TensorboardExperiment(ExperimentTracker):
         ax.set_title(f'{self.stage.title()} Epoch: {step}')
         return fig
 
-    def add_hparams(self, hparams: dict[str, Union[str, Real]], metrics: dict[str, Real]):
+    def add_hparams(self, hparams: Dict[str, Union[str, Real]], metrics: Dict[str, Real]):
         _metrics = self._validate_hparam_metric_keys(metrics)
         self._writer.add_hparams(hparams, _metrics)
 
