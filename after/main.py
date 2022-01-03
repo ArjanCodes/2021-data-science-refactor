@@ -5,7 +5,7 @@ import torch
 from ds.dataset import create_dataloader
 from ds.models import LinearNet
 from ds.runner import Runner, run_epoch
-from ds.tracking import TensorboardExperiment
+from ds.tensorboard import TensorboardExperiment
 
 # Hyperparameters
 EPOCH_COUNT = 20
