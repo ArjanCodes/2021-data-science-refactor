@@ -11,6 +11,8 @@ from ds.tensorboard import TensorboardExperiment
 EPOCH_COUNT = 20
 LR = 5e-5
 BATCH_SIZE = 128
+
+# Log configuration
 LOG_PATH = "./runs"
 
 # Data configuration
